@@ -18,6 +18,6 @@ class StringCalculator
             return (int) $numbers[0];
         }
 
-        return 0;
+        return array_sum($numbers);
     }
 }
