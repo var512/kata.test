@@ -6,11 +6,11 @@ namespace Domain;
 
 class StringCalculator
 {
-    private array $separators;
+    private array $delimiters;
 
     public function __construct()
     {
-        $this->separators = [',', '\n'];
+        $this->delimiters = [',', '\n'];
     }
 
     public function add(string $numbers): int
@@ -19,7 +19,7 @@ class StringCalculator
             return 0;
         }
 
-        $numbers = str_replace($this->separators, ',', $numbers);
+        $numbers = str_replace($this->delimiters, ',', $numbers);
         $numbers = explode(',', $numbers);
 
         if (count($numbers) === 1) {
