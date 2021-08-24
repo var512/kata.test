@@ -31,6 +31,11 @@ class StringCalculatorTest extends TestCase
     {
         $this->assertEquals(-1, (new StringCalculator())->add('0,1,-1,-1'));
         $this->assertEquals(0, (new StringCalculator())->add('0,0,0'));
-        $this->assertEquals(1, (new StringCalculator())->add('0,1,0'));
+    }
+
+    /** @test */
+    public function accepts_new_lines_as_separator()
+    {
+        $this->assertEquals(6, (new StringCalculator())->add('1\n2,3'));
     }
 }
