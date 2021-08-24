@@ -6,14 +6,20 @@ namespace Domain;
 
 class StringCalculator
 {
+    private array $separators;
+
+    public function __construct()
+    {
+        $this->separators = [',', '\n'];
+    }
+
     public function add(string $numbers): int
     {
         if ($numbers === '') {
             return 0;
         }
 
-        $separators = [',', '\n'];
-        $numbers = str_replace($separators, ',', $numbers);
+        $numbers = str_replace($this->separators, ',', $numbers);
         $numbers = explode(',', $numbers);
 
         if (count($numbers) === 1) {

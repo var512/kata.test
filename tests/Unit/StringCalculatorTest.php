@@ -34,8 +34,9 @@ class StringCalculatorTest extends TestCase
     }
 
     /** @test */
-    public function accepts_new_lines_as_separator()
+    public function can_handle_new_lines_as_separator()
     {
         $this->assertEquals(6, (new StringCalculator())->add('1\n2,3'));
+        $this->assertEquals(6, (new StringCalculator())->add('1\n2\n3'));
     }
 }
