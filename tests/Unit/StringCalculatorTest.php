@@ -29,8 +29,7 @@ class StringCalculatorTest extends TestCase
     /** @test */
     public function multiple_numbers_should_return_their_sum()
     {
-        $this->assertEquals(-1, (new StringCalculator())->add('0,1,-1,-1'));
-        $this->assertEquals(0, (new StringCalculator())->add('0,0,0'));
+        $this->assertEquals(6, (new StringCalculator())->add('1,2,3'));
     }
 
     /** @test */
