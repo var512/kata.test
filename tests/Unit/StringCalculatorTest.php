@@ -12,4 +12,12 @@ class StringCalculatorTest extends TestCase
     {
         $this->assertEquals(0, (new StringCalculator())->add(''));
     }
+
+    /** @test */
+    public function single_number_should_return_its_own_value()
+    {
+        $number = '1';
+        $sum = (new StringCalculator())->add($number);
+        $this->assertEquals($number, $sum);
+    }
 }

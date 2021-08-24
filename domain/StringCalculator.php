@@ -12,6 +12,12 @@ class StringCalculator
             return 0;
         }
 
+        $numbers = explode(',', $numbers);
+
+        if (count($numbers) === 1) {
+            return (int) $numbers[0];
+        }
+
         return 0;
     }
 }
