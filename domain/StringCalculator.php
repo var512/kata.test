@@ -15,8 +15,16 @@ class StringCalculator
 
     public function add(string $numbers): int
     {
+        $customDelimiter = null;
+
         if ($numbers === '') {
             return 0;
+        }
+
+        preg_match('/^\/\/(.)\\\n(.*)/', $numbers, $customDelimiter);
+
+        if (isset($customDelimiter[1])) {
+            array_push($this->delimiters, $customDelimiter[1]);
         }
 
         $numbers = str_replace($this->delimiters, ',', $numbers);

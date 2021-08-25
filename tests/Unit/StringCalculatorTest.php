@@ -38,4 +38,10 @@ class StringCalculatorTest extends TestCase
         $this->assertEquals(6, (new StringCalculator())->add('1\n2,3'));
         $this->assertEquals(6, (new StringCalculator())->add('1\n2\n3'));
     }
+
+    /** @test */
+    public function can_handle_a_specific_delimiter()
+    {
+        $this->assertEquals(3, (new StringCalculator())->add('//;\n1;2'));
+    }
 }
