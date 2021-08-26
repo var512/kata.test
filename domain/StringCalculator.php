@@ -38,7 +38,7 @@ class StringCalculator
 
         $negativeNumbers = array_filter($numbers, fn ($n) => $n < 0);
         if (count($negativeNumbers) > 0) {
-            throw new NegativeNumbersAreNotAllowed('negatives not allowed '.$negativeNumbers[0]);
+            throw new NegativeNumbersAreNotAllowed('negatives not allowed '.implode(' ', $negativeNumbers));
         }
 
         return array_sum($numbers);

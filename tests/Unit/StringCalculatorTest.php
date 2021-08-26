@@ -53,4 +53,12 @@ class StringCalculatorTest extends TestCase
         $this->expectExceptionMessage('negatives not allowed -1');
         (new StringCalculator())->add('-1,2,3');
     }
+
+    /** @test */
+    public function negative_numbers_are_not_allowed()
+    {
+        $this->expectException(NegativeNumbersAreNotAllowed::class);
+        $this->expectExceptionMessage('negatives not allowed -1 -2 -3');
+        (new StringCalculator())->add('-1,-2,-3');
+    }
 }
