@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Domain;
 
+use App\Exceptions\NegativeNumbersAreNotAllowed;
+
 class StringCalculator
 {
     private array $delimiters;
@@ -30,8 +32,9 @@ class StringCalculator
         $numbers = str_replace($this->delimiters, ',', $numbers);
         $numbers = explode(',', $numbers);
 
-        if (count($numbers) === 1) {
-            return (int) $numbers[0];
+        $negativeNumbers = array_filter($numbers, fn ($n) => $n < 0);
+        if (count($negativeNumbers)) {
+            throw new NegativeNumbersAreNotAllowed('negatives not allowed '.$negativeNumbers[0]);
         }
 
         return array_sum($numbers);

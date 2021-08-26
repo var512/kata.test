@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Exceptions\NegativeNumbersAreNotAllowed;
 use Domain\StringCalculator;
 use PHPUnit\Framework\TestCase;
 
@@ -43,5 +44,13 @@ class StringCalculatorTest extends TestCase
     public function can_handle_a_specific_delimiter()
     {
         $this->assertEquals(3, (new StringCalculator())->add('//;\n1;2'));
+    }
+
+    /** @test */
+    public function negative_numbers_are_not_allowed()
+    {
+        $this->expectException(NegativeNumbersAreNotAllowed::class);
+        $this->expectExceptionMessageMatches('/^negatives not allowed -([0-9]*)/');
+        (new StringCalculator())->add('-1,2,3');
     }
 }
