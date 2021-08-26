@@ -15,6 +15,9 @@ class StringCalculator
         $this->delimiters = [',', '\n'];
     }
 
+    /**
+     * @throws NegativeNumbersAreNotAllowed
+     */
     public function add(string $numbers): int
     {
         $customDelimiter = null;
@@ -33,7 +36,7 @@ class StringCalculator
         $numbers = explode(',', $numbers);
 
         $negativeNumbers = array_filter($numbers, fn ($n) => $n < 0);
-        if (count($negativeNumbers)) {
+        if (count($negativeNumbers) > 0) {
             throw new NegativeNumbersAreNotAllowed('negatives not allowed '.$negativeNumbers[0]);
         }
 
