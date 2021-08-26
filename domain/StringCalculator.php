@@ -30,6 +30,7 @@ class StringCalculator
 
         if (isset($customDelimiter[1])) {
             array_push($this->delimiters, $customDelimiter[1]);
+            $numbers = mb_substr($numbers, 5);
         }
 
         $numbers = str_replace($this->delimiters, ',', $numbers);
