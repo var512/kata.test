@@ -79,4 +79,10 @@ class StringCalculatorTest extends TestCase
         $this->expectsEvents(AddOccurred::class);
         (new StringCalculator())->add('1,2');
     }
+
+    /** @test */
+    public function numbers_bigger_than_1000_are_ignored()
+    {
+        $this->assertEquals(1, (new StringCalculator())->add('1,1001'));
+    }
 }

@@ -55,6 +55,8 @@ class StringCalculator
             throw new NegativeNumbersAreNotAllowed('negatives not allowed '.implode(' ', $negativeNumbers));
         }
 
+        $numbers = array_filter($numbers, fn ($n) => $n <= 1000);
+
         return array_sum($numbers);
     }
 }
