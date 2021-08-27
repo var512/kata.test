@@ -58,7 +58,7 @@ class StringCalculator
 
         $this->guardAgainstNegativeNumbers($numbers);
 
-        $numbers = array_filter($numbers, fn ($n) => $n <= 1000);
+        $numbers = $this->removeYugeNumbers($numbers);
 
         return array_sum($numbers);
     }
@@ -138,5 +138,17 @@ class StringCalculator
         if (count($negativeNumbers) > 0) {
             throw new NegativeNumbersAreNotAllowed('negatives not allowed ' . implode(' ', $negativeNumbers));
         }
+    }
+
+    /**
+     * Removes numbers bigger than 1000.
+     *
+     * @param array $numbers
+     *
+     * @return array
+     */
+    protected function removeYugeNumbers(array $numbers): array
+    {
+        return array_filter($numbers, fn ($n) => $n <= 1000);
     }
 }
