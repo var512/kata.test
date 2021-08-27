@@ -32,8 +32,7 @@ class StringCalculator
      */
     public function add(string $numbers): int
     {
-        $this->calledCount++;
-        AddOccurred::dispatch();
+        AddOccurred::dispatch($this->calledCount++);
 
         $customDelimiter = null;
 
