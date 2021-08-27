@@ -11,10 +11,14 @@ class StringCalculator
 {
     private array $delimiters;
     private int $calledCount = 0;
+    private string $specificDelimiterPattern;
+    private string $anyLengthDelimiterPattern;
 
     public function __construct()
     {
         $this->delimiters = [',', '\n'];
+        $this->specificDelimiterPattern = '^\/\/(.)\\\n(.*)';
+        $this->anyLengthDelimiterPattern = '^\/\/\[(.*)]\\\n(.*)';
     }
 
     /**
@@ -40,7 +44,12 @@ class StringCalculator
             return 0;
         }
 
-        preg_match('/^\/\/(.)\\\n(.*)|^\/\/\[(.*)]\\\n(.*)/', $numbers, $customDelimiter);
+        preg_match(
+            '/' . $this->specificDelimiterPattern . '|' . $this->anyLengthDelimiterPattern . '/',
+            $numbers,
+            $customDelimiter,
+        );
+
         $customDelimiterIndex = count($customDelimiter) === 5 ? 3 : 1;
 
         if (isset($customDelimiter[$customDelimiterIndex])) {
