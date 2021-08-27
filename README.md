@@ -1,3 +1,3 @@
-just some tests
+# kata.test
 
-ignore me...
+https://en.wikipedia.org/wiki/Kata_(programming)
