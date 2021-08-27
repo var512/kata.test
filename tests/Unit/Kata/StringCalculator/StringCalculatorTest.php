@@ -84,5 +84,6 @@ class StringCalculatorTest extends TestCase
     public function numbers_bigger_than_1000_are_ignored()
     {
         $this->assertEquals(1, (new StringCalculator())->add('1,1001'));
+        $this->assertEquals(1001, (new StringCalculator())->add('1,1000,1001'));
     }
 }
