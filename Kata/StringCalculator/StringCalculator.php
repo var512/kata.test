@@ -38,25 +38,17 @@ class StringCalculator
     {
         AddOccurred::dispatch($this->calledCount++);
 
-        $customDelimiter = null;
-
         if ($numbers === '') {
             return 0;
         }
 
-        preg_match(
-            '/' . $this->specificDelimiterPattern . '|' . $this->anyLengthDelimiterPattern . '/',
-            $numbers,
-            $customDelimiter,
-        );
+        $customDelimiter = $this->getCustomDelimiter($numbers);
 
-        $customDelimiterIndex = count($customDelimiter) === 5 ? 3 : 1;
-
-        if (isset($customDelimiter[$customDelimiterIndex])) {
-            array_push($this->delimiters, $customDelimiter[$customDelimiterIndex]);
-            $numbers = preg_replace('/^(\/\/.*?\\\n)/', '', $numbers);
+        if ($customDelimiter !== null) {
+            array_push($this->delimiters, $customDelimiter);
         }
 
+        $numbers = preg_replace('/^(\/\/.*?\\\n)/', '', $numbers);
         $numbers = str_replace($this->delimiters, ',', $numbers);
         $numbers = explode(',', $numbers);
 
@@ -68,5 +60,31 @@ class StringCalculator
         $numbers = array_filter($numbers, fn ($n) => $n <= 1000);
 
         return array_sum($numbers);
+    }
+
+    /**
+     * Returns the custom delimiter.
+     *
+     * @param string $numbers
+     *
+     * @return string|null
+     */
+    protected function getCustomDelimiter(string $numbers): ?string
+    {
+        $customDelimiter = null;
+
+        preg_match(
+            '/' . $this->specificDelimiterPattern . '|' . $this->anyLengthDelimiterPattern . '/',
+            $numbers,
+            $customDelimiter,
+        );
+
+        $customDelimiterIndex = count($customDelimiter) === 5 ? 3 : 1;
+
+        if (isset($customDelimiter[$customDelimiterIndex])) {
+            return $customDelimiter[$customDelimiterIndex];
+        }
+
+        return null;
     }
 }
