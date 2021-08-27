@@ -53,10 +53,7 @@ class StringCalculator
         $numbers = $this->removeMetadata($numbers);
         $numbers = $this->unserializeNumbers($numbers);
 
-        $negativeNumbers = array_filter($numbers, fn ($n) => $n < 0);
-        if (count($negativeNumbers) > 0) {
-            throw new NegativeNumbersAreNotAllowed('negatives not allowed ' . implode(' ', $negativeNumbers));
-        }
+        $this->guardAgainstNegativeNumbers($numbers);
 
         $numbers = array_filter($numbers, fn ($n) => $n <= 1000);
 
@@ -122,5 +119,21 @@ class StringCalculator
         $numbers = explode(',', $numbers);
 
         return $numbers;
+    }
+
+    /**
+     * Check if there are negative numbers.
+     *
+     * @param array $numbers
+     *
+     * @throws NegativeNumbersAreNotAllowed
+     */
+    protected function guardAgainstNegativeNumbers(array $numbers): void
+    {
+        $negativeNumbers = array_filter($numbers, fn ($n) => $n < 0);
+
+        if (count($negativeNumbers) > 0) {
+            throw new NegativeNumbersAreNotAllowed('negatives not allowed ' . implode(' ', $negativeNumbers));
+        }
     }
 }
