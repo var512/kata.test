@@ -10,6 +10,8 @@ use App\Exceptions\NegativeNumbersAreNotAllowed;
 
 class StringCalculator
 {
+    private array $numbers;
+
     private array $delimiters;
 
     private int $calledCount = 0;
@@ -39,28 +41,29 @@ class StringCalculator
      * @throws NegativeNumbersAreNotAllowed
      * @throws InvalidMetadataException
      */
-    public function add(string $numbers): int
+    public function add(string $rawNumbers): int
     {
         AddOccurred::dispatch($this->calledCount++);
 
-        if ($numbers === '') {
+        if ($rawNumbers === '') {
             return 0;
         }
 
-        $customDelimiter = $this->getCustomDelimiter($numbers);
+        $customDelimiter = $this->getCustomDelimiter($rawNumbers);
 
         if ($customDelimiter !== null) {
             array_push($this->delimiters, $customDelimiter);
         }
 
-        $numbers = $this->removeMetadata($numbers);
-        $numbers = $this->unserializeNumbers($numbers);
+        $this->numbers = $this->unserializeNumbers(
+            $this->removeMetadata($rawNumbers)
+        );
 
-        $this->guardAgainstNegativeNumbers($numbers);
+        $this->guardAgainstNegativeNumbers($this->numbers);
 
-        $numbers = $this->removeYugeNumbers($numbers);
+        $this->numbers = $this->removeYugeNumbers($this->numbers);
 
-        return array_sum($numbers);
+        return array_sum($this->numbers);
     }
 
     /**
