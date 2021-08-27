@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Kata\StringCalculator;
 
+use App\Events\AddOccurred;
 use App\Exceptions\NegativeNumbersAreNotAllowed;
 
 class StringCalculator
@@ -32,6 +33,7 @@ class StringCalculator
     public function add(string $numbers): int
     {
         $this->calledCount++;
+        AddOccurred::dispatch();
 
         $customDelimiter = null;
 

@@ -2,9 +2,10 @@
 
 namespace Tests\Unit\Kata\StringCalculator;
 
+use App\Events\AddOccurred;
 use App\Exceptions\NegativeNumbersAreNotAllowed;
 use Kata\StringCalculator\StringCalculator;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class StringCalculatorTest extends TestCase
 {
@@ -70,5 +71,12 @@ class StringCalculatorTest extends TestCase
         $stringCalculator->add('1,2,3');
         $stringCalculator->add('1,2,3');
         $this->assertEquals(3, $stringCalculator->getCalledCount());
+    }
+
+    /** @test */
+    public function adding_should_trigger_add_occurred_event()
+    {
+        $this->expectsEvents(AddOccurred::class);
+        (new StringCalculator())->add('1,2');
     }
 }
