@@ -86,4 +86,10 @@ class StringCalculatorTest extends TestCase
         $this->assertEquals(1, (new StringCalculator())->add('1,1001'));
         $this->assertEquals(1001, (new StringCalculator())->add('1,1000,1001'));
     }
+
+    /** @test */
+    public function delimiters_can_be_of_any_length()
+    {
+        $this->assertEquals(6, (new StringCalculator())->add('//[***]\n1***2***3'));
+    }
 }

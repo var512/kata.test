@@ -40,11 +40,12 @@ class StringCalculator
             return 0;
         }
 
-        preg_match('/^\/\/(.)\\\n(.*)/', $numbers, $customDelimiter);
+        preg_match('/^\/\/(.)\\\n(.*)|^\/\/\[(.*)]\\\n(.*)/', $numbers, $customDelimiter);
+        $customDelimiterIndex = count($customDelimiter) === 5 ? 3 : 1;
 
-        if (isset($customDelimiter[1])) {
-            array_push($this->delimiters, $customDelimiter[1]);
-            $numbers = mb_substr($numbers, 5);
+        if (isset($customDelimiter[$customDelimiterIndex])) {
+            array_push($this->delimiters, $customDelimiter[$customDelimiterIndex]);
+            $numbers = preg_replace('/^(\/\/.*?\\\n)/', '', $numbers);
         }
 
         $numbers = str_replace($this->delimiters, ',', $numbers);
