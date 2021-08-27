@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Kata\StringCalculator;
 
 use App\Events\AddOccurred;
+use App\Exceptions\InvalidMetadataException;
 use App\Exceptions\NegativeNumbersAreNotAllowed;
 
 class StringCalculator
@@ -33,6 +34,7 @@ class StringCalculator
 
     /**
      * @throws NegativeNumbersAreNotAllowed
+     * @throws InvalidMetadataException
      */
     public function add(string $numbers): int
     {
@@ -48,7 +50,7 @@ class StringCalculator
             array_push($this->delimiters, $customDelimiter);
         }
 
-        $numbers = preg_replace('/^(\/\/.*?\\\n)/', '', $numbers);
+        $numbers = $this->removeMetadata($numbers);
         $numbers = str_replace($this->delimiters, ',', $numbers);
         $numbers = explode(',', $numbers);
 
@@ -86,5 +88,25 @@ class StringCalculator
         }
 
         return null;
+    }
+
+    /**
+     * Removes metadata from the input string.
+     *
+     * @param string $numbers
+     *
+     * @throws InvalidMetadataException
+     *
+     * @return string
+     */
+    protected function removeMetadata(string $numbers): string
+    {
+        $numbers = preg_replace('/^(\/\/.*?\\\n)/', '', $numbers);
+
+        if ($numbers === null || is_array($numbers)) {
+            throw new InvalidMetadataException();
+        }
+
+        return $numbers;
     }
 }
