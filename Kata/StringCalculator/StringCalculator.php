@@ -52,7 +52,7 @@ class StringCalculator
 
         $negativeNumbers = array_filter($numbers, fn ($n) => $n < 0);
         if (count($negativeNumbers) > 0) {
-            throw new NegativeNumbersAreNotAllowed('negatives not allowed '.implode(' ', $negativeNumbers));
+            throw new NegativeNumbersAreNotAllowed('negatives not allowed ' . implode(' ', $negativeNumbers));
         }
 
         $numbers = array_filter($numbers, fn ($n) => $n <= 1000);
