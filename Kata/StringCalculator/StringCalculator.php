@@ -9,6 +9,7 @@ use App\Exceptions\NegativeNumbersAreNotAllowed;
 class StringCalculator
 {
     private array $delimiters;
+    private int $calledCount = 0;
 
     public function __construct()
     {
@@ -16,10 +17,22 @@ class StringCalculator
     }
 
     /**
+     * Returns how many times add() was invoked.
+     *
+     * @return int
+     */
+    public function getCalledCount(): int
+    {
+        return $this->calledCount;
+    }
+
+    /**
      * @throws NegativeNumbersAreNotAllowed
      */
     public function add(string $numbers): int
     {
+        $this->calledCount++;
+
         $customDelimiter = null;
 
         if ($numbers === '') {

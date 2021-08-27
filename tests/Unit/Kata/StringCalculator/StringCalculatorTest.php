@@ -61,4 +61,14 @@ class StringCalculatorTest extends TestCase
         $this->expectExceptionMessage('negatives not allowed -1 -2 -3');
         (new StringCalculator())->add('-1,-2,-3');
     }
+
+    /** @test */
+    public function can_count_calls_to_add()
+    {
+        $stringCalculator = new StringCalculator();
+        $stringCalculator->add('1,2,3');
+        $stringCalculator->add('1,2,3');
+        $stringCalculator->add('1,2,3');
+        $this->assertEquals(3, $stringCalculator->getCalledCount());
+    }
 }
