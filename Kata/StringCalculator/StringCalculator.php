@@ -11,8 +11,11 @@ use App\Exceptions\NegativeNumbersAreNotAllowed;
 class StringCalculator
 {
     private array $delimiters;
+
     private int $calledCount = 0;
+
     private string $specificDelimiterPattern;
+
     private string $anyLengthDelimiterPattern;
 
     public function __construct()
