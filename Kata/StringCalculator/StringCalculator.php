@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Domain;
+namespace Kata\StringCalculator;
 
 use App\Exceptions\NegativeNumbersAreNotAllowed;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Kata\StringCalculator;
 
 use App\Exceptions\NegativeNumbersAreNotAllowed;
-use Domain\StringCalculator;
+use Kata\StringCalculator\StringCalculator;
 use PHPUnit\Framework\TestCase;
 
 class StringCalculatorTest extends TestCase
