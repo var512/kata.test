@@ -51,8 +51,7 @@ class StringCalculator
         }
 
         $numbers = $this->removeMetadata($numbers);
-        $numbers = str_replace($this->delimiters, ',', $numbers);
-        $numbers = explode(',', $numbers);
+        $numbers = $this->unserializeNumbers($numbers);
 
         $negativeNumbers = array_filter($numbers, fn ($n) => $n < 0);
         if (count($negativeNumbers) > 0) {
@@ -106,6 +105,21 @@ class StringCalculator
         if ($numbers === null || is_array($numbers)) {
             throw new InvalidMetadataException();
         }
+
+        return $numbers;
+    }
+
+    /**
+     * Returns the number string as array.
+     *
+     * @param string $numbers
+     *
+     * @return string[]
+     */
+    protected function unserializeNumbers(string $numbers): array
+    {
+        $numbers = str_replace($this->delimiters, ',', $numbers);
+        $numbers = explode(',', $numbers);
 
         return $numbers;
     }
