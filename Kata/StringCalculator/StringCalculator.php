@@ -10,8 +10,10 @@ use App\Exceptions\NegativeNumbersAreNotAllowed;
 
 class StringCalculator
 {
+    /** @var int[] */
     private array $numbers;
 
+    /** @var string[] */
     private array $delimiters;
 
     private int $calledCount = 0;
@@ -105,7 +107,7 @@ class StringCalculator
     {
         $numbers = preg_replace('/^(\/\/.*?\\\n)/', '', $numbers);
 
-        if ($numbers === null || is_array($numbers)) {
+        if ($numbers === null) {
             throw new InvalidMetadataException();
         }
 
@@ -117,12 +119,13 @@ class StringCalculator
      *
      * @param string $numbers
      *
-     * @return string[]
+     * @return int[]
      */
     protected function unserializeNumbers(string $numbers): array
     {
         $numbers = str_replace($this->delimiters, ',', $numbers);
         $numbers = explode(',', $numbers);
+        $numbers = array_map('intval', $numbers);
 
         return $numbers;
     }
@@ -130,13 +133,13 @@ class StringCalculator
     /**
      * Check if there are negative numbers.
      *
-     * @param array $numbers
+     * @param int[] $numbers
      *
      * @throws NegativeNumbersAreNotAllowed
      */
     protected function guardAgainstNegativeNumbers(array $numbers): void
     {
-        $negativeNumbers = array_filter($numbers, fn ($n) => $n < 0);
+        $negativeNumbers = array_filter($numbers, fn (int $n) => $n < 0);
 
         if (count($negativeNumbers) > 0) {
             throw new NegativeNumbersAreNotAllowed('negatives not allowed ' . implode(' ', $negativeNumbers));
@@ -146,12 +149,12 @@ class StringCalculator
     /**
      * Removes numbers bigger than 1000.
      *
-     * @param array $numbers
+     * @param int[] $numbers
      *
-     * @return array
+     * @return int[]
      */
     protected function removeYugeNumbers(array $numbers): array
     {
-        return array_filter($numbers, fn ($n) => $n <= 1000);
+        return array_filter($numbers, fn (int $n) => $n <= 1000);
     }
 }
