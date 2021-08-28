@@ -10,9 +10,6 @@ use App\Exceptions\NegativeNumbersAreNotAllowed;
 
 class StringCalculator
 {
-    /** @var int[] */
-    private array $numbers;
-
     /** @var string[] */
     private array $delimiters;
 
@@ -27,16 +24,6 @@ class StringCalculator
         $this->delimiters = [',', '\n'];
         $this->specificDelimiterPattern = '^\/\/(.)\\\n(.*)';
         $this->anyLengthDelimiterPattern = '^\/\/\[(.*)]\\\n(.*)';
-    }
-
-    /**
-     * Returns how many times add() was invoked.
-     *
-     * @return int
-     */
-    public function getCalledCount(): int
-    {
-        return $this->calledCount;
     }
 
     /**
@@ -57,31 +44,41 @@ class StringCalculator
             array_push($this->delimiters, $customDelimiter);
         }
 
-        $this->numbers = $this->unserializeNumbers(
+        $numbers = $this->unserializeNumbers(
             $this->removeMetadata($rawNumbers)
         );
 
-        $this->guardAgainstNegativeNumbers($this->numbers);
+        $this->guardAgainstNegativeNumbers($numbers);
 
-        $this->numbers = $this->removeYugeNumbers($this->numbers);
+        $numbers = $this->removeYugeNumbers($numbers);
 
-        return array_sum($this->numbers);
+        return array_sum($numbers);
+    }
+
+    /**
+     * Returns how many times add() was invoked.
+     *
+     * @return int
+     */
+    public function getCalledCount(): int
+    {
+        return $this->calledCount;
     }
 
     /**
      * Returns the custom delimiter.
      *
-     * @param string $numbers
+     * @param string $rawNumbers
      *
      * @return string|null
      */
-    protected function getCustomDelimiter(string $numbers): ?string
+    protected function getCustomDelimiter(string $rawNumbers): ?string
     {
         $customDelimiter = null;
 
         preg_match(
             '/' . $this->specificDelimiterPattern . '|' . $this->anyLengthDelimiterPattern . '/',
-            $numbers,
+            $rawNumbers,
             $customDelimiter,
         );
 
@@ -97,37 +94,35 @@ class StringCalculator
     /**
      * Removes metadata from the input string.
      *
-     * @param string $numbers
+     * @param string $rawNumbers
      *
      * @throws InvalidMetadataException
      *
      * @return string
      */
-    protected function removeMetadata(string $numbers): string
+    protected function removeMetadata(string $rawNumbers): string
     {
-        $numbers = preg_replace('/^(\/\/.*?\\\n)/', '', $numbers);
+        $rawNumbers = preg_replace('/^(\/\/.*?\\\n)/', '', $rawNumbers);
 
-        if ($numbers === null) {
+        if ($rawNumbers === null) {
             throw new InvalidMetadataException();
         }
 
-        return $numbers;
+        return $rawNumbers;
     }
 
     /**
      * Returns the number string as array.
      *
-     * @param string $numbers
+     * @param string $rawNumbers
      *
      * @return int[]
      */
-    protected function unserializeNumbers(string $numbers): array
+    protected function unserializeNumbers(string $rawNumbers): array
     {
-        $numbers = str_replace($this->delimiters, ',', $numbers);
-        $numbers = explode(',', $numbers);
-        $numbers = array_map('intval', $numbers);
+        $rawNumbers = str_replace($this->delimiters, ',', $rawNumbers);
 
-        return $numbers;
+        return array_map('intval', explode(',', $rawNumbers));
     }
 
     /**
