@@ -92,4 +92,10 @@ class StringCalculatorTest extends TestCase
     {
         $this->assertEquals(6, (new StringCalculator())->add('//[***]\n1***2***3'));
     }
+
+    /** @test */
+    public function allow_multiple_delimiters()
+    {
+        $this->assertEquals(6, (new StringCalculator())->add('//[*][%]\n1*2%3'));
+    }
 }

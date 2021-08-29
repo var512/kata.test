@@ -24,6 +24,7 @@ class StringCalculator
         $this->delimiters = [',', '\n'];
         $this->specificDelimiterPattern = '^\/\/(.)\\\n(.*)';
         $this->anyLengthDelimiterPattern = '^\/\/\[(.*)]\\\n(.*)';
+        $this->multipleDelimitersPattern = '(\[(.*?)\])';
     }
 
     /**
@@ -40,8 +41,8 @@ class StringCalculator
 
         $customDelimiter = $this->getCustomDelimiter($rawNumbers);
 
-        if ($customDelimiter !== null) {
-            array_push($this->delimiters, $customDelimiter);
+        if (count($customDelimiter)) {
+            $this->delimiters = array_merge($this->delimiters, $customDelimiter);
         }
 
         $numbers = $this->unserializeNumbers(
@@ -70,11 +71,17 @@ class StringCalculator
      *
      * @param string $rawNumbers
      *
-     * @return string|null
+     * @return string[]|null
      */
-    protected function getCustomDelimiter(string $rawNumbers): ?string
+    protected function getCustomDelimiter(string $rawNumbers): ?array
     {
-        $customDelimiter = null;
+        $customDelimiter = [];
+
+        preg_match_all('/' . $this->multipleDelimitersPattern . '/', $rawNumbers, $customDelimiter);
+
+        if (count($customDelimiter[0]) > 1) {
+            return $customDelimiter[2];
+        }
 
         preg_match(
             '/' . $this->specificDelimiterPattern . '|' . $this->anyLengthDelimiterPattern . '/',
@@ -85,10 +92,10 @@ class StringCalculator
         $customDelimiterIndex = count($customDelimiter) === 5 ? 3 : 1;
 
         if (isset($customDelimiter[$customDelimiterIndex])) {
-            return $customDelimiter[$customDelimiterIndex];
+            return [$customDelimiter[$customDelimiterIndex]];
         }
 
-        return null;
+        return [];
     }
 
     /**
