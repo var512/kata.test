@@ -19,6 +19,8 @@ class StringCalculator
 
     private string $anyLengthDelimiterPattern;
 
+    private string $multipleDelimitersPattern;
+
     public function __construct()
     {
         $this->delimiters = [',', '\n'];
@@ -39,11 +41,7 @@ class StringCalculator
             return 0;
         }
 
-        $customDelimiter = $this->getCustomDelimiter($rawNumbers);
-
-        if (count($customDelimiter)) {
-            $this->delimiters = array_merge($this->delimiters, $customDelimiter);
-        }
+        $this->delimiters = array_merge($this->delimiters, $this->getCustomDelimiter($rawNumbers));
 
         $numbers = $this->unserializeNumbers(
             $this->removeMetadata($rawNumbers)
@@ -71,9 +69,9 @@ class StringCalculator
      *
      * @param string $rawNumbers
      *
-     * @return string[]|null
+     * @return string[]
      */
-    protected function getCustomDelimiter(string $rawNumbers): ?array
+    protected function getCustomDelimiter(string $rawNumbers): array
     {
         $customDelimiter = [];
 
