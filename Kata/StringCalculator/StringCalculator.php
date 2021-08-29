@@ -15,18 +15,9 @@ class StringCalculator
 
     private int $calledCount = 0;
 
-    private string $specificDelimiterPattern;
-
-    private string $anyLengthDelimiterPattern;
-
-    private string $multipleDelimitersPattern;
-
     public function __construct()
     {
         $this->delimiters = [',', '\n'];
-        $this->specificDelimiterPattern = '^\/\/(.)\\\n(.*)';
-        $this->anyLengthDelimiterPattern = '^\/\/\[(.*)]\\\n(.*)';
-        $this->multipleDelimitersPattern = '(\[(.*?)\])';
     }
 
     /**
@@ -75,19 +66,19 @@ class StringCalculator
     {
         $customDelimiter = [];
 
-        preg_match_all('/' . $this->multipleDelimitersPattern . '/', $rawNumbers, $customDelimiter);
+        preg_match_all('/(?<multipleDelimiters>\[(.*?)])/', $rawNumbers, $customDelimiter);
 
         if (count($customDelimiter[0]) > 1) {
             return $customDelimiter[2];
         }
 
         preg_match(
-            '/' . $this->specificDelimiterPattern . '|' . $this->anyLengthDelimiterPattern . '/',
+            '/(?<specificDelimiter>^\/\/(.)\\\n(.*))|(?<anyLengthDelimiter>^\/\/\[(.*)]\\\n(.*))/',
             $rawNumbers,
             $customDelimiter,
         );
 
-        $customDelimiterIndex = count($customDelimiter) === 5 ? 3 : 1;
+        $customDelimiterIndex = count($customDelimiter) === 9 ? 5 : 2;
 
         if (isset($customDelimiter[$customDelimiterIndex])) {
             return [$customDelimiter[$customDelimiterIndex]];
