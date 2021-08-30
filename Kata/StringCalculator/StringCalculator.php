@@ -6,22 +6,17 @@ namespace Kata\StringCalculator;
 
 use App\Events\AddOccurred;
 use App\Exceptions\InvalidMetadataException;
-use App\Exceptions\NegativeNumbersAreNotAllowed;
+use App\Exceptions\NegativeNumbersNotAllowedException;
 
 class StringCalculator
 {
     /** @var string[] */
-    private array $delimiters;
+    private array $delimiters = [',', '\n'];
 
     private int $calledCount = 0;
 
-    public function __construct()
-    {
-        $this->delimiters = [',', '\n'];
-    }
-
     /**
-     * @throws NegativeNumbersAreNotAllowed
+     * @throws NegativeNumbersNotAllowedException
      * @throws InvalidMetadataException
      */
     public function add(string $rawNumbers): int
@@ -126,14 +121,14 @@ class StringCalculator
      *
      * @param int[] $numbers
      *
-     * @throws NegativeNumbersAreNotAllowed
+     * @throws NegativeNumbersNotAllowedException
      */
     protected function guardAgainstNegativeNumbers(array $numbers): void
     {
         $negativeNumbers = array_filter($numbers, fn (int $n) => $n < 0);
 
         if (count($negativeNumbers) > 0) {
-            throw new NegativeNumbersAreNotAllowed('negatives not allowed ' . implode(' ', $negativeNumbers));
+            throw new NegativeNumbersNotAllowedException('negatives not allowed ' . implode(' ', $negativeNumbers));
         }
     }
 

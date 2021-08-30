@@ -3,7 +3,7 @@
 namespace Tests\Unit\Kata\StringCalculator;
 
 use App\Events\AddOccurred;
-use App\Exceptions\NegativeNumbersAreNotAllowed;
+use App\Exceptions\NegativeNumbersNotAllowedException;
 use Kata\StringCalculator\StringCalculator;
 use Tests\TestCase;
 
@@ -59,7 +59,7 @@ class StringCalculatorTest extends TestCase
     /** @test */
     public function negative_number_is_not_allowed(): void
     {
-        $this->expectException(NegativeNumbersAreNotAllowed::class);
+        $this->expectException(NegativeNumbersNotAllowedException::class);
         $this->expectExceptionMessage('negatives not allowed -1');
         $this->stringCalculator->add('-1,2,3');
     }
@@ -67,7 +67,7 @@ class StringCalculatorTest extends TestCase
     /** @test */
     public function negative_numbers_are_not_allowed(): void
     {
-        $this->expectException(NegativeNumbersAreNotAllowed::class);
+        $this->expectException(NegativeNumbersNotAllowedException::class);
         $this->expectExceptionMessage('negatives not allowed -1 -2 -3');
         $this->stringCalculator->add('-1,-2,-3');
     }
