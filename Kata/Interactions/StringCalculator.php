@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Kata\StringCalculator;
+namespace Kata\Interactions;
 
 use App\Events\AddOccurred;
 use App\Exceptions\InvalidMetadataException;
 use App\Exceptions\NegativeNumbersNotAllowedException;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class StringCalculator
 {
@@ -14,6 +16,13 @@ class StringCalculator
     private array $delimiters = [',', '\n'];
 
     private int $calledCount = 0;
+
+    private WebServiceInterface $someWebService;
+
+    public function __construct(WebServiceInterface $someWebService)
+    {
+        $this->someWebService = $someWebService;
+    }
 
     /**
      * @throws NegativeNumbersNotAllowedException
@@ -37,7 +46,15 @@ class StringCalculator
 
         $numbers = $this->removeYugeNumbers($numbers);
 
-        return array_sum($numbers);
+        $sum = array_sum($numbers);
+
+        try {
+            Log::info((string) $sum);
+        } catch (Exception $e) {
+            $this->someWebService->notify($e->getMessage());
+        }
+
+        return $sum;
     }
 
     /**
