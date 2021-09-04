@@ -3,8 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Kata\Interactions\RealSomewebservice;
-use Kata\Interactions\SomewebserviceInterface;
+use Kata\Interactions\RealWebService;
+use Kata\Interactions\WebServiceInterface;
 
 class SomewebserviceProvider extends ServiceProvider
 {
@@ -15,7 +15,7 @@ class SomewebserviceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(SomewebserviceInterface::class, RealSomewebservice::class);
+        $this->app->singleton(WebServiceInterface::class, RealWebService::class);
     }
 
     /**

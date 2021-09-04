@@ -6,7 +6,7 @@ use App\Events\AddOccurred;
 use App\Exceptions\NegativeNumbersNotAllowedException;
 use Exception;
 use Illuminate\Support\Facades\Log;
-use Kata\Interactions\SomewebserviceInterface;
+use Kata\Interactions\WebServiceInterface;
 use Kata\Interactions\StringCalculator;
 use Mockery;
 use Mockery\MockInterface;
@@ -139,8 +139,8 @@ class StringCalculatorTest extends TestCase
         });
 
         $this->instance(
-            SomewebserviceInterface::class,
-            Mockery::mock(SomewebserviceInterface::class, function (MockInterface $mock) {
+            WebServiceInterface::class,
+            Mockery::mock(WebServiceInterface::class, function (MockInterface $mock) {
                 $mock->shouldReceive('notify')->once()->with('log fail 3');
             })
         );

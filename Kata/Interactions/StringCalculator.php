@@ -17,9 +17,9 @@ class StringCalculator
 
     private int $calledCount = 0;
 
-    private SomewebserviceInterface $somewebservice;
+    private WebServiceInterface $somewebservice;
 
-    public function __construct(SomewebserviceInterface $somewebservice)
+    public function __construct(WebServiceInterface $somewebservice)
     {
         $this->somewebservice = $somewebservice;
     }
