@@ -17,11 +17,11 @@ class StringCalculator
 
     private int $calledCount = 0;
 
-    private WebServiceInterface $somewebservice;
+    private WebServiceInterface $someWebService;
 
-    public function __construct(WebServiceInterface $somewebservice)
+    public function __construct(WebServiceInterface $someWebService)
     {
-        $this->somewebservice = $somewebservice;
+        $this->someWebService = $someWebService;
     }
 
     /**
@@ -51,7 +51,7 @@ class StringCalculator
         try {
             Log::info((string) $sum);
         } catch (Exception $e) {
-            $this->somewebservice->notify($e->getMessage());
+            $this->someWebService->notify($e->getMessage());
         }
 
         return $sum;
