@@ -4,8 +4,12 @@ namespace Tests\Unit\Kata\Interactions;
 
 use App\Events\AddOccurred;
 use App\Exceptions\NegativeNumbersNotAllowedException;
+use Exception;
 use Illuminate\Support\Facades\Log;
+use Kata\Interactions\SomewebserviceInterface;
 use Kata\Interactions\StringCalculator;
+use Mockery;
+use Mockery\MockInterface;
 use Tests\TestCase;
 
 class StringCalculatorTest extends TestCase
@@ -16,7 +20,7 @@ class StringCalculatorTest extends TestCase
     {
         parent::setUp();
 
-        $this->stringCalculator = new StringCalculator();
+        $this->stringCalculator = app()->make(StringCalculator::class);
     }
 
     /** @test */
@@ -122,5 +126,29 @@ class StringCalculatorTest extends TestCase
             ->withArgs(fn ($message) => $message === 3);
 
         $this->stringCalculator->add('1,2');
+    }
+
+    /** @test */
+    public function sum_logging_exceptions_should_notify_somewebservice(): void
+    {
+        $log = new FakeLog;
+        Log::swap($log);
+
+        $this->instance(
+            SomewebserviceInterface::class,
+            Mockery::mock(SomewebserviceInterface::class, function (MockInterface $mock) {
+                $mock->shouldReceive('notify')->once()->with('log fail 3');
+            })
+        );
+
+        app()->make(StringCalculator::class)->add('1,2');
+    }
+}
+
+class FakeLog
+{
+    public static function info(string $message): void
+    {
+        throw new Exception('log fail ' . $message);
     }
 }

@@ -7,6 +7,7 @@ namespace Kata\Interactions;
 use App\Events\AddOccurred;
 use App\Exceptions\InvalidMetadataException;
 use App\Exceptions\NegativeNumbersNotAllowedException;
+use Exception;
 use Illuminate\Support\Facades\Log;
 
 class StringCalculator
@@ -15,6 +16,13 @@ class StringCalculator
     private array $delimiters = [',', '\n'];
 
     private int $calledCount = 0;
+
+    private SomewebserviceInterface $somewebservice;
+
+    public function __construct(SomewebserviceInterface $somewebservice)
+    {
+        $this->somewebservice = $somewebservice;
+    }
 
     /**
      * @throws NegativeNumbersNotAllowedException
@@ -40,7 +48,11 @@ class StringCalculator
 
         $sum = array_sum($numbers);
 
-        Log::info($sum);
+        try {
+            Log::info($sum);
+        } catch (Exception $e) {
+            $this->somewebservice->notify($e->getMessage());
+        }
 
         return $sum;
     }
