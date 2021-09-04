@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kata\Interactions;
 
-class RealWebService implements WebServiceInterface
+class SomeWebService implements WebServiceInterface
 {
     public function notify(string $message): void
     {
