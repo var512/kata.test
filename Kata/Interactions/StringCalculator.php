@@ -145,7 +145,7 @@ class StringCalculator
         $negativeNumbers = array_filter($numbers, fn (int $n) => $n < 0);
 
         if (count($negativeNumbers) > 0) {
-            throw new NegativeNumbersNotAllowedException('negatives not allowed ' . implode(' ', $negativeNumbers));
+            throw new NegativeNumbersNotAllowedException($negativeNumbers);
         }
     }
 
