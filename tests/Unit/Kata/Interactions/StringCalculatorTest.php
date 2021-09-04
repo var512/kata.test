@@ -123,7 +123,7 @@ class StringCalculatorTest extends TestCase
     {
         Log::shouldReceive('info')
             ->once()
-            ->withArgs(fn ($message) => $message === 3);
+            ->withArgs(fn ($message) => $message === '3');
 
         $this->stringCalculator->add('1,2');
     }

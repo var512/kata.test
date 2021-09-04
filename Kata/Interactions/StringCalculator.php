@@ -49,7 +49,7 @@ class StringCalculator
         $sum = array_sum($numbers);
 
         try {
-            Log::info($sum);
+            Log::info((string) $sum);
         } catch (Exception $e) {
             $this->somewebservice->notify($e->getMessage());
         }
