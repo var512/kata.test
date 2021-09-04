@@ -4,6 +4,7 @@ namespace Tests\Unit\Kata\Interactions;
 
 use App\Events\AddOccurred;
 use App\Exceptions\NegativeNumbersNotAllowedException;
+use Illuminate\Support\Facades\Log;
 use Kata\Interactions\StringCalculator;
 use Tests\TestCase;
 
@@ -111,5 +112,15 @@ class StringCalculatorTest extends TestCase
     public function allow_multiple_delimiters_with_any_length(): void
     {
         $this->assertEquals(6, $this->stringCalculator->add('//[**][%%]\n1**2%%3'));
+    }
+
+    /** @test */
+    public function sum_results_should_be_logged(): void
+    {
+        Log::shouldReceive('info')
+            ->once()
+            ->withArgs(fn ($message) => $message === 3);
+
+        $this->stringCalculator->add('1,2');
     }
 }

@@ -7,6 +7,7 @@ namespace Kata\Interactions;
 use App\Events\AddOccurred;
 use App\Exceptions\InvalidMetadataException;
 use App\Exceptions\NegativeNumbersNotAllowedException;
+use Illuminate\Support\Facades\Log;
 
 class StringCalculator
 {
@@ -37,7 +38,11 @@ class StringCalculator
 
         $numbers = $this->removeYugeNumbers($numbers);
 
-        return array_sum($numbers);
+        $sum = array_sum($numbers);
+
+        Log::info($sum);
+
+        return $sum;
     }
 
     /**
