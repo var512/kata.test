@@ -26,39 +26,38 @@ class StringCalculatorTest extends TestCase
     /** @test */
     public function empty_string_should_equal_zero(): void
     {
-        $this->assertEquals(0, $this->stringCalculator->add(''));
+        $this->assertSame(0, $this->stringCalculator->add(''));
     }
 
     /** @test */
     public function single_number_should_return_its_own_value(): void
     {
-        $number = '1';
-        $this->assertEquals($number, $this->stringCalculator->add($number));
+        $this->assertSame(1, $this->stringCalculator->add('1'));
     }
 
     /** @test */
     public function two_numbers_should_return_their_sum(): void
     {
-        $this->assertEquals(3, $this->stringCalculator->add('1,2'));
+        $this->assertSame(3, $this->stringCalculator->add('1,2'));
     }
 
     /** @test */
     public function multiple_numbers_should_return_their_sum(): void
     {
-        $this->assertEquals(6, $this->stringCalculator->add('1,2,3'));
+        $this->assertSame(6, $this->stringCalculator->add('1,2,3'));
     }
 
     /** @test */
     public function can_handle_new_lines_as_delimiter(): void
     {
-        $this->assertEquals(6, $this->stringCalculator->add('1\n2,3'));
-        $this->assertEquals(6, $this->stringCalculator->add('1\n2\n3'));
+        $this->assertSame(6, $this->stringCalculator->add('1\n2,3'));
+        $this->assertSame(6, $this->stringCalculator->add('1\n2\n3'));
     }
 
     /** @test */
     public function can_handle_a_specific_delimiter(): void
     {
-        $this->assertEquals(3, $this->stringCalculator->add('//;\n1;2'));
+        $this->assertSame(3, $this->stringCalculator->add('//;\n1;2'));
     }
 
     /** @test */
@@ -83,7 +82,7 @@ class StringCalculatorTest extends TestCase
         $this->stringCalculator->add('');
         $this->stringCalculator->add('0');
         $this->stringCalculator->add('1,2');
-        $this->assertEquals(3, $this->stringCalculator->getCalledCount());
+        $this->assertSame(3, $this->stringCalculator->getCalledCount());
     }
 
     /** @test */
@@ -96,26 +95,26 @@ class StringCalculatorTest extends TestCase
     /** @test */
     public function numbers_bigger_than_1000_are_ignored(): void
     {
-        $this->assertEquals(1, $this->stringCalculator->add('1,1001'));
-        $this->assertEquals(1001, $this->stringCalculator->add('1,1000,1001'));
+        $this->assertSame(1, $this->stringCalculator->add('1,1001'));
+        $this->assertSame(1001, $this->stringCalculator->add('1,1000,1001'));
     }
 
     /** @test */
     public function delimiters_can_be_of_any_length(): void
     {
-        $this->assertEquals(6, $this->stringCalculator->add('//[***]\n1***2***3'));
+        $this->assertSame(6, $this->stringCalculator->add('//[***]\n1***2***3'));
     }
 
     /** @test */
     public function allow_multiple_delimiters(): void
     {
-        $this->assertEquals(6, $this->stringCalculator->add('//[*][%]\n1*2%3'));
+        $this->assertSame(6, $this->stringCalculator->add('//[*][%]\n1*2%3'));
     }
 
     /** @test */
     public function allow_multiple_delimiters_with_any_length(): void
     {
-        $this->assertEquals(6, $this->stringCalculator->add('//[**][%%]\n1**2%%3'));
+        $this->assertSame(6, $this->stringCalculator->add('//[**][%%]\n1**2%%3'));
     }
 
     /** @test */
