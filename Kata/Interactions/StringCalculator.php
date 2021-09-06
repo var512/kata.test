@@ -46,15 +46,7 @@ class StringCalculator
 
         $numbers = $this->removeYugeNumbers($numbers);
 
-        $sum = array_sum($numbers);
-
-        try {
-            Log::info((string) $sum);
-        } catch (Exception $e) {
-            $this->someWebService->notify($e->getMessage());
-        }
-
-        return $sum;
+        return $this->sum($numbers);
     }
 
     /**
@@ -159,5 +151,25 @@ class StringCalculator
     protected function removeYugeNumbers(array $numbers): array
     {
         return array_filter($numbers, fn (int $n) => $n <= 1000);
+    }
+
+    /**
+     * Returns the sum of all numbers.
+     *
+     * @param int[] $numbers
+     *
+     * @return int
+     */
+    protected function sum(array $numbers): int
+    {
+        $sum = array_sum($numbers);
+
+        try {
+            Log::info((string) $sum);
+        } catch (Exception $e) {
+            $this->someWebService->notify($e->getMessage());
+        }
+
+        return $sum;
     }
 }
