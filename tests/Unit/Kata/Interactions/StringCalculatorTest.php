@@ -130,11 +130,8 @@ class StringCalculatorTest extends TestCase
     /** @test */
     public function sum_logging_exceptions_should_notify_somewebservice(): void
     {
-        Log::swap(new class {
-            public static function info(string $message): void
-            {
-                throw new Exception('log fail ' . $message);
-            }
+        Log::shouldReceive('info')->once()->andReturnUsing(function (string $message) {
+            throw new Exception('log fail ' . $message);
         });
 
         $this->instance(
